@@ -327,11 +327,47 @@ bool in_defend_sel(char *selStr){
 * 防止攻击者绕过检测，可以在自行link的framework中获取BundleID并进行检测，以在被hook前进行校验
 * 可以通过getenv("XPC_SERVICE_NAME")来获取BundleID并进行校验以避免常见的BundleID获取方法被hook
 
-### 安全检测相关
+***
+
+### 其他
 * 进行安全检测的类和函数不宜直接使用Defend，Detection，Hook类似的关键字，以避免相应的检测函数直接被hook，hook检测可以放在较隐蔽的地方或不以函数形式体现，可以多位置联合检测
 * 若检测到hook行为，不宜直接弹窗，以避免攻击者通过关键字回溯，可以延迟一段时间执行异常函数或默默上报后台等。
+* 加密key不要直接写在代码中，在汇编下很容易直接看出来
+原代码
+```objective-c
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    NSString *aesKey = @"TEST_AES_KEY";
+    NSLog(@"aesKey--%@",aesKey);
+    self.view.backgroundColor = [UIColor greenColor];
+}
+```
+汇编下的代码[部分]
+```assembly
+self = X0               ; ViewController *const
+_cmd = X1               ; SEL
+SUB             SP, SP, #0x40
+STP             X20, X19, [SP,#0x30+var_10]
+STP             X29, X30, [SP,#0x30+var_s0]
+ADD             X29, SP, #0x30
+MOV             X19, self
+self = X19              ; ViewController *const
+NOP
+LDR             X8, =_OBJC_CLASS_$_ViewController
+STP             X0, X8, [SP,#0x30+var_20]
+NOP
+LDR             _cmd, =sel_viewDidLoad ; "viewDidLoad"
+ADD             X0, SP, #0x30+var_20
+BL              _objc_msgSendSuper2
+ADR             X8, cfstr_TestAesKey ; "TEST_AES_KEY"
+NOP
+aesKey = X8             ; Foundation::NSString::NSString *
+STR             aesKey, [SP,#0x30+var_30]
+ADR             X0, cfstr_Aeskey ; "aesKey--%@"
+```
+* 若使用md5或aes等通用加密函数时，关键的加密前的数据或加密key不宜直接当作函数参数传入
 
-### 剩下的明天写。。。
+### 其他的明天再写。。。
 
 
 
