@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>MethodTrace</key>
+	<dict>
+		<key>ENABLE</key>
+		<false/>
+		<key>CLASS_LIST</key>
+		<dict>
+			<key>BaseMsgContentViewController</key>
+			<string></string>
+			<key>CMessageMgr</key>
+			<array>
+				<string>AsyncOnAddMsg:MsgWrap:</string>
+				<string>onRevokeMsg:</string>
+			</array>
+		</dict>
+	</dict>
+	<key>Cycript</key>
+	<dict>
+		<key>nslog</key>
+		<dict>
+			<key>LoadAtLaunch</key>
+			<true/>
+			<key>priority</key>
+			<integer>0</integer>
+			<key>content</key>
+			<string>NSLog = function() { var types = &apos;v&apos;, args = [], count = arguments.length; for (var i = 0; i != count; ++i) { types += &apos;@&apos;; args.push(arguments[i]); } new Functor(dlsym(RTLD_DEFAULT, &quot;NSLog&quot;), types).apply(null, args); }</string>
+		</dict>
+		<key>ms</key>
+		<dict>
+			<key>LoadAtLaunch</key>
+			<true/>
+			<key>priority</key>
+			<string>1</string>
+			<key>url</key>
+			<string>https://raw.githubusercontent.com/AloneMonkey/MDCycript/master/MS.cy</string>
+		</dict>
+		<key>hook</key>
+		<dict>
+			<key>LoadAtLaunch</key>
+			<true/>
+			<key>priority</key>
+			<string>2</string>
+			<key>content</key>
+			<string>try{
+  	var oldm = {};
+	HookMessage(CustomViewController, @selector(showChangeLog:), function(log) {
+    	NSLog(&quot;hooked by cycript!!!&quot;);
+    	return oldm-&gt;call(this,log);
+	}, oldm);
+}catch(err){
+  	NSLog(err.toString())
+}</string>
+		</dict>
+		<key>md</key>
+		<dict>
+			<key>LoadAtLaunch</key>
+			<true/>
+			<key>priority</key>
+			<string>3</string>
+			<key>url</key>
+			<string>https://raw.githubusercontent.com/AloneMonkey/MDCycript/master/md.cy</string>
+		</dict>
+	</dict>
+</dict>
+</plist>
