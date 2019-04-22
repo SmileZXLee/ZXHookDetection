@@ -165,7 +165,7 @@ int hook_stat(char *c, struct stat *s){
     self.view.backgroundColor = [UIColor greenColor];
 }
 ```
-攻击者hook代码
+攻击者hook部分代码
 ```objective-c
 %hook ViewController
 
@@ -367,7 +367,11 @@ ADR             X0, cfstr_Aeskey ; "aesKey--%@"
 ```
 * 若使用md5或aes等通用加密函数时，关键的加密前的数据或加密key不宜直接当作函数参数传入
 
-### 其他的明天再写。。。
+### 字符串加密&代码混淆
+* 字符串加密即关键的常量字符串不直接写死在代码中，而是通过一定的运算计算出来，加大攻击者破解难度
+* 代码混淆一般是利用宏进行字符串替换，使得攻击者使用class-dump或ida等工具得出的类名和函数变成无意义的字符串，加大攻击者破解难度
+* 推荐使用mj老师的[MJCodeObfuscation](https://github.com/CoderMJLee/MJCodeObfuscation)进行字符串加密与代码混淆，快捷高效
+
 
 
 
