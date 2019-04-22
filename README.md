@@ -285,6 +285,63 @@ bool in_defend_sel(char *selStr){
 2019-04-22 01:32:22.554384 ZXHookDetection[6971:1059024] 尝试hook受保护的方法:[viewDidLoad]，已禁止
 2019-04-22 01:32:22.554525 ZXHookDetection[6971:1059024] 尝试hook受保护的方法:[bundleIdentifier]，已禁止
 ```
+[攻]从上方打印可以看出，我们自己链接的动态库比攻击者注入的动态库早load，我们可以使用otool查看mach-o文件的loadCommand，验证我们的猜想，以下为loadcommand部分信息
+```c
+Load command 13
+          cmd LC_LOAD_DYLIB
+      cmdsize 76
+         name @rpath/ZXHookFramework.framework/ZXHookFramework (offset 24)
+   time stamp 2 Thu Jan  1 08:00:02 1970
+      current version 1.0.0
+compatibility version 1.0.0
+Load command 14
+          cmd LC_LOAD_DYLIB
+      cmdsize 84
+         name /System/Library/Frameworks/Foundation.framework/Foundation (offset 24)
+   time stamp 2 Thu Jan  1 08:00:02 1970
+      current version 1570.15.0
+compatibility version 300.0.0
+Load command 15
+          cmd LC_LOAD_DYLIB
+      cmdsize 52
+         name /usr/lib/libobjc.A.dylib (offset 24)
+   time stamp 2 Thu Jan  1 08:00:02 1970
+      current version 228.0.0
+compatibility version 1.0.0
+Load command 16
+          cmd LC_LOAD_DYLIB
+      cmdsize 52
+         name /usr/lib/libSystem.B.dylib (offset 24)
+   time stamp 2 Thu Jan  1 08:00:02 1970
+      current version 1252.250.1
+compatibility version 1.0.0
+Load command 17
+          cmd LC_LOAD_DYLIB
+      cmdsize 92
+         name /System/Library/Frameworks/CoreFoundation.framework/CoreFoundation (offset 24)
+   time stamp 2 Thu Jan  1 08:00:02 1970
+      current version 1570.15.0
+compatibility version 150.0.0
+Load command 18
+          cmd LC_LOAD_DYLIB
+      cmdsize 76
+         name /System/Library/Frameworks/UIKit.framework/UIKit (offset 24)
+   time stamp 2 Thu Jan  1 08:00:02 1970
+      current version 61000.0.0
+compatibility version 1.0.0
+Load command 19
+          cmd LC_LOAD_DYLIB
+      cmdsize 80
+         name @executable_path/Frameworks/libZXHookAttackDylib.dylib (offset 24)
+   time stamp 2 Thu Jan  1 08:00:02 1970
+      current version 0.0.0
+compatibility version 0.0.0
+Load command 20
+          cmd LC_RPATH
+      cmdsize 40
+         path @executable_path/Frameworks (offset 12)
+```
+显然，ZXHookFramework.framework(防护者)加载早于libZXHookAttackDylib.dylib(攻击者)，因此防护有效，因此我们可以通过修改mach-o文件的loadCommand来调整动态库加载顺序，使得libZXHookAttackDylib.dylib加载早于ZXHookFramework.framework即可使防护失效
 
 ***
 
