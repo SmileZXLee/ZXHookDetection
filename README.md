@@ -153,7 +153,7 @@ int hook_stat(char *c, struct stat *s){
 [攻]可以hook NSString的hasPrefix方法绕过检测
 ***
 
-### 关键函数hook检测、阻止hook
+### 关键函数hook检测、阻止hook、hook白名单
 #### 攻击者dylib动态库注入总是早于类中的+load方法调用，因此在+load方法中无法进行防护，我们可以先link一个自己的framework，并在framework中+load方法内进行防护
 * 创建一个framework，并在其中创建一个名为ZXMyFramework的类，在+load中进行防护操作
 * 防护操作基本思路是，我们在攻击者之前hook method_exchangeImplementations与method_setImplementation，使用fishhook进行函数指针交换，并使得我们可以轻松监控所有调用method_exchangeImplementations与method_setImplementation的情况，因Method Swizzle，Cydia Substrate进行方法交换均至少会调用以上两个方法中的一个，因此可以以此检测、阻止重要方法被hook
