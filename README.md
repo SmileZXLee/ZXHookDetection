@@ -33,7 +33,7 @@ static char *JailbrokenPathArr[] = {"/Applications/Cydia.app","/usr/sbin/sshd","
             return NO;
         }
     }
-    return YES;
+    return %orig;
 }
 %end
 ```
