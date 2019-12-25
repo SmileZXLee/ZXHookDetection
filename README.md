@@ -430,6 +430,10 @@ ADR             X0, cfstr_Aeskey ; "aesKey--%@"
 * 代码混淆一般是利用宏进行字符串替换，使得攻击者使用class-dump或ida等工具得出的类名和函数变成无意义的字符串，加大攻击者破解难度
 * 推荐使用mj老师的[MJCodeObfuscation](https://github.com/CoderMJLee/MJCodeObfuscation)进行字符串加密与代码混淆，快捷高效
 
+### 加密协议分析示例
+* 点击访问👉 [创高体育App登录加密协议分析](https://github.com/SmileZXLee/CGEncryptBreak)
+* 此示例为示例攻击者分析应用加密协议的大致流程，协议分析仅涉及登录请求，未涉及内部核心加密处理，请务必确保仅用于学习之用途
+* 通过此示例开发者可以初步了解攻击者如何破解应用加密协议，以便更好地进行加固和防护
 
 
 
