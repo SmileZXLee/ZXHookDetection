@@ -5,7 +5,7 @@
 ```objective-c
 static char *JailbrokenPathArr[] = {"/Applications/Cydia.app","/usr/sbin/sshd","/bin/bash","/etc/apt","/Library/MobileSubstrate","/User/Applications/"};
 ```
-[防]判断是否越狱(使用NSFileManager)
+<font color=red>防</font>判断是否越狱(使用NSFileManager)
 ```objective-c
 + (BOOL)isJailbroken1{
     if(TARGET_IPHONE_SIMULATOR)return NO;
@@ -434,6 +434,9 @@ ADR             X0, cfstr_Aeskey ; "aesKey--%@"
 * 点击访问👉 [创高体育App登录加密协议分析](https://github.com/SmileZXLee/CGEncryptBreak)
 * 此示例为示例攻击者分析应用加密协议的大致流程，协议分析仅涉及登录请求，未涉及内部核心加密处理，请务必确保仅用于学习之用途
 * 通过此示例开发者可以初步了解攻击者如何破解应用加密协议，以便更好地进行加固和防护
+
+### 浅谈http、https与数据加密
+* 点击访问👉 [浅谈http、https与数据加密](https://github.com/SmileZXLee/aboutHttp)
 
 
 
