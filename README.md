@@ -5,7 +5,7 @@
 ```objective-c
 static char *JailbrokenPathArr[] = {"/Applications/Cydia.app","/usr/sbin/sshd","/bin/bash","/etc/apt","/Library/MobileSubstrate","/User/Applications/"};
 ```
-<font color=red>防</font>判断是否越狱(使用NSFileManager)
+`[防]`判断是否越狱(使用NSFileManager)
 ```objective-c
 + (BOOL)isJailbroken1{
     if(TARGET_IPHONE_SIMULATOR)return NO;
@@ -21,7 +21,7 @@ static char *JailbrokenPathArr[] = {"/Applications/Cydia.app","/usr/sbin/sshd","
 ```objective-c
 2019-04-22 00:54:08.163918 ZXHookDetection[6933:1053473] isJailbroken1--1
 ```
-[攻]攻击者可以通过hook NSFileManager的fileExistsAtPath方法来绕过检测
+`[攻]`攻击者可以通过hook NSFileManager的fileExistsAtPath方法来绕过检测
 ```objective-c
 //绕过使用NSFileManager判断特定文件是否存在的越狱检测，此时直接返回NO势必会影响程序中对这个方法的正常使用，因此可以先打印一下path，然后判断如果path是用来判断是否越狱则返回NO，否则按照正常逻辑返回
 %hook NSFileManager
@@ -43,7 +43,7 @@ static char *JailbrokenPathArr[] = {"/Applications/Cydia.app","/usr/sbin/sshd","
 ```
 2.使用C语言函数stat判断文件是否存在(注:stat函数用于获取对应文件信息，返回0则为获取成功，-1为获取失败)  
 
-[防]判断是否越狱(使用stat)
+`[防]`判断是否越狱(使用stat)
 ```objective-c
 + (BOOL)isJailbroken2{
     if(TARGET_IPHONE_SIMULATOR)return NO;
@@ -60,7 +60,7 @@ static char *JailbrokenPathArr[] = {"/Applications/Cydia.app","/usr/sbin/sshd","
 ```objective-c
 2019-04-22 00:54:08.164001 ZXHookDetection[6933:1053473] isJailbroken2--1
 ```
-[攻]使用fishhook可hook C函数，fishhook通过在mac-o文件中查找并替换函数地址达到hook的目的
+`[攻]`使用fishhook可hook C函数，fishhook通过在mac-o文件中查找并替换函数地址达到hook的目的
 ```objective-c
 static int (*orig_stat)(char *c, struct stat *s);
 int hook_stat(char *c, struct stat *s){
@@ -86,7 +86,7 @@ int hook_stat(char *c, struct stat *s){
 ```objective-c
 2019-04-22 00:58:22.950933 ZXHookDetection[6941:1054289] isJailbroken2--0
 ```
-[防]判断stat的来源是否来自于系统库，因为fishhook通过交换函数地址来实现hook，若hook了stat，则stat来源将指向攻击者注入的动态库中
+`[防]`判断stat的来源是否来自于系统库，因为fishhook通过交换函数地址来实现hook，若hook了stat，则stat来源将指向攻击者注入的动态库中
 因此我们可以完善上方的isJailbroken2判断规则，若stat来源非系统库，则直接返回已越狱
 ```objective-c
 + (BOOL)isJailbroken2{
@@ -123,12 +123,12 @@ int hook_stat(char *c, struct stat *s){
     return !(NULL == getenv("DYLD_INSERT_LIBRARIES"));
 }
 ```
-[攻]此时依然可以使用fishhook hook函数getenv，攻防方法同上，此处不再赘述。
+`[攻]`此时依然可以使用fishhook hook函数getenv，攻防方法同上，此处不再赘述。
 
 ***
 
 ### 非法动态库注入检测
-[防]通过遍历dyld_image检测非法注入的动态库
+`[防]`通过遍历dyld_image检测非法注入的动态库
 ```objective-c
 + (BOOL)isExternalLibs{
     if(TARGET_IPHONE_SIMULATOR)return NO;
@@ -150,7 +150,7 @@ int hook_stat(char *c, struct stat *s){
 ```objective-c
 2019-04-22 00:58:22.951011 ZXHookDetection[6941:1054289] isExternalLibs--1
 ```
-[攻]可以hook NSString的hasPrefix方法绕过检测
+`[攻]`可以hook NSString的hasPrefix方法绕过检测
 ***
 
 ### 关键函数hook检测、阻止hook、hook白名单
@@ -285,7 +285,7 @@ bool in_defend_sel(char *selStr){
 2019-04-22 01:32:22.554384 ZXHookDetection[6971:1059024] 尝试hook受保护的方法:[viewDidLoad]，已禁止
 2019-04-22 01:32:22.554525 ZXHookDetection[6971:1059024] 尝试hook受保护的方法:[bundleIdentifier]，已禁止
 ```
-[攻]从上方打印可以看出，我们自己链接的动态库比攻击者注入的动态库早load，我们可以使用otool查看mach-o文件的loadCommand，验证我们的猜想，以下为loadcommand部分信息
+`[攻]`从上方打印可以看出，我们自己链接的动态库比攻击者注入的动态库早load，我们可以使用otool查看mach-o文件的loadCommand，验证我们的猜想，以下为loadcommand部分信息
 ```c
 Load command 13
           cmd LC_LOAD_DYLIB
