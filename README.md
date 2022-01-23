@@ -431,6 +431,9 @@ ADR             X0, cfstr_Aeskey ; "aesKey--%@"
 * 推荐使用mj老师的[MJCodeObfuscation](https://github.com/CoderMJLee/MJCodeObfuscation)进行字符串加密与代码混淆，快捷高效
 * 注意：大规模使用混淆可能会导致上架审核被拒，建议只处理核心类和方法
 
+### 【iOS逆向】iOSApp+springboot后端sign签名+aes加密流程&逆向破解分析示例(class-dump导出头文件+(Logos+monkeyDev)hook+IDA反编译)
+* 点击访问👉 [iOS逆向】iOSApp+springboot后端sign签名+aes加密流程&逆向破解分析示例(class-dump导出头文件+(Logos+monkeyDev)hook+IDA反编译)](https://github.com/SmileZXLee/iOSSignatureAnalysis)
+
 ### 【iOS逆向】高效Tweak工具函数集，基于theos、monkeyDev
 * 点击访问👉 [【iOS逆向】高效Tweak工具函数集，基于theos、monkeyDev](https://github.com/SmileZXLee/ZXHookUtil)
 
