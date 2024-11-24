@@ -440,6 +440,9 @@ ADR             X0, cfstr_Aeskey ; "aesKey--%@"
 ### 浅谈http、https与数据加密
 * 点击访问👉 [浅谈http、https与数据加密](https://github.com/SmileZXLee/aboutHttp)
 
+### 防抓包、http-dns解决方案，防止DNS劫持
+* 点击访问👉 [ZXRequestBlock](https://github.com/SmileZXLee/ZXRequestBlock)
+
 
 
 
